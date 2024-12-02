@@ -9,9 +9,29 @@ export const transformAST: ASTTransformation = context => {
     .find(j.Identifier, {
       name: 'filters'
     })
+    // Exclude when the parent node is named "props"
+    .filter((node: any) => node?.parent?.parent?.parentPath?.value?.key?.name !== 'props')
+    .filter((node: any) => node?.parent?.parent?.parentPath?.value?.type !== 'ReturnStatement')
+    // this.filters is safe
+    .filter((node: any) => node?.parent?.value?.object?.type !== 'ThisExpression')
+    // Exclude when filters is the name of a ObjectMethod argument
+    .filter((node: any) => node?.parent?.value?.type !== 'ObjectMethod')
+    // Must be chained like $options.filters
+    .filter((node: any) => (node?.parent?.value?.type === "MemberExpression"
+      && node?.parentPath?.node?.object?.property?.name === "$options") || node?.parent?.value?.type !== "MemberExpression"
+    )
+    // Exclude variable declarations (VariableDeclarator)
+    .filter((node: any) => node?.parent?.value?.type !== 'VariableDeclarator')
+    // Exclude AssignmentExpression
+    .filter((node: any) => node?.parent?.value?.type !== 'AssignmentExpression')
+    // Exclude CallExpression
+    .filter((node: any) => node?.parent?.value?.type !== 'CallExpression')
+    // Exclude ObjectProperty
+    .filter((node: any) => node?.parent?.value?.type !== 'ObjectProperty')
     .filter((node: any) => node?.value.property?.name !== 'createApp')
   if (rootNodes) {
     rootNodes.forEach((node: any) => {
+      debugger;
       const path = filename
       const name = 'Removed Filters'
       const suggest =
