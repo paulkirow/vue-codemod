@@ -14,7 +14,6 @@ import { excludedTransformations } from '../transformations'
 import vueTransformations from '../vue-transformations'
 import { excludedVueTransformations } from '../vue-transformations'
 import runTransformation from '../src/runTransformation'
-import { transform as packageTransform } from '../src/packageTransformation'
 
 import type { TransformationModule } from '../src/runTransformation'
 import { formatterOutput, cliInstance } from '../src/report'
@@ -108,10 +107,6 @@ async function main() {
       transformationName,
       transformationModule
     )
-    if (packageTransform()) {
-      processFilePath.push('package.json')
-      global.outputReport['package transformation'] = 1
-    }
   }
 
   if (runAllTransformation) {
@@ -142,10 +137,6 @@ async function main() {
           `skip ${key} transformation, Because it will run in other transformation`
         )
       }
-    }
-    if (packageTransform()) {
-      processFilePath.push('package.json')
-      global.outputReport['package transformation'] = 1
     }
   }
   cliInstance.update(cliInstance.getTotal(), {
@@ -180,7 +171,7 @@ function processTransformation(
       path: p,
       source: retainedSource
     }
-    const extension = (/\.([^.]*)$/.exec(fileInfo.path) || [])[0]
+    const extension = (/\.([^.]*)$/.exec(fileInfo.path) || [])[0] ?? '';
     if (!extensions.includes(extension)) {
       debug(`skip ${fileInfo.path} file because not end with ${extensions}.`)
       continue
@@ -192,7 +183,6 @@ function processTransformation(
         transformationModule,
         params as object
       )
-
       if (retainedSource != result) {
         fs.writeFileSync(p, result)
         ruleProcessFile.push(p)
