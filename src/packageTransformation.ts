@@ -18,10 +18,10 @@ const globalAddConfig: {
   global: {
     add: {},
     update: {
-      vue: '^3.1.1',
-      vuex: '^4.0.1',
-      'vue-router': '^4.0.8',
-      'vue-i18n': '^9.1.6'
+      vue: '^3.4.30',
+      vuex: '^4.0.2',
+      'vue-router': '^4.2.5',
+      'vue-i18n': '^9.8.0'
     },
     delete: { 'vue-template-compiler': '', '@vue/composition-api': '' }
   },
@@ -36,9 +36,6 @@ const globalAddConfig: {
     delete: {}
   },
   devDependencies: {
-    add: {
-      '@vue/compiler-sfc': '^3.1.1'
-    },
     update: {
       '@vue/cli-plugin-babel': '^4.5.0',
       '@vue/cli-service': '^4.5.0'
