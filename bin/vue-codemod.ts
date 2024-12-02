@@ -8,7 +8,6 @@ import * as yargs from 'yargs'
 import * as globby from 'globby'
 
 import createDebug from 'debug'
-import { question } from 'readline-sync'
 
 import builtInTransformations from '../transformations'
 import { excludedTransformations } from '../transformations'
@@ -88,17 +87,6 @@ async function main() {
     console.log(
       'You need at least one option in command, enter vue-codemod -h to see help. '
     )
-    return
-  }
-
-  // Remind user to back up files
-  const answer = question(
-    'Warning!!\n' +
-      'This tool may overwrite files. Please use version control tools or back up your code in advance.\n' +
-      'Press enter or enter yes or enter Y to continue:'
-  )
-  if (!['', 'yes', 'Y'].includes(answer.trim())) {
-    console.log('Abort!!!')
     return
   }
 
