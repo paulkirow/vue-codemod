@@ -16,6 +16,7 @@ global.subRules = {}
 export default function astTransformationToJSCodeshiftModule<Params = any>(
   transformAST: ASTTransformation<Params>
 ): Transform {
+  // @ts-ignore
   const transform: Transform = (file, api, options: Params) => {
     const j = api.jscodeshift
     let root
